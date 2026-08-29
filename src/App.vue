@@ -190,7 +190,7 @@ onMounted(loadDashboard)
               </p>
 
               <p class="observation-description">
-                Events detected in the assessment window
+                Events observed on this date
               </p>
             </article>
 
@@ -204,7 +204,7 @@ onMounted(loadDashboard)
               </p>
 
               <p class="observation-description">
-                Events detected in the assessment window
+                Events observed on this date
               </p>
             </article>
 
@@ -245,26 +245,24 @@ onMounted(loadDashboard)
           </div>
         </section>
 
-        <!-- Assessment window -->
+        <!-- Assessment date -->
         <section class="dashboard-section">
 
           <div class="section-heading">
             <div>
               <p class="section-label">
-                ASSESSMENT WINDOW
+                ASSESSMENT DATE
               </p>
 
               <h2>
-                {{ assessment.window_start }}
-                →
-                {{ assessment.window_end }}
+                {{ assessment.assessment_date }}
               </h2>
             </div>
           </div>
 
           <p class="section-description">
-            This assessment analyzes NASA DONKI space
-            weather events from the previous 30 days.
+            This assessment represents space weather activity
+            recorded for this calendar day.
           </p>
 
         </section>
