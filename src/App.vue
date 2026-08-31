@@ -1,5 +1,24 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+} from 'vue'
+
+import {
+  Chart,
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Tooltip,
+  Legend,
+  Filler,
+} from 'chart.js'
 
 import {
   fetchLatestAssessment,
@@ -11,11 +30,32 @@ import type {
   TrendAssessment,
 } from './types/assessment'
 
+Chart.register(
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Tooltip,
+  Legend,
+  Filler,
+)
+
 const assessment = ref<Assessment | null>(null)
 const trends = ref<TrendAssessment[]>([])
 
 const loading = ref(true)
 const error = ref<string | null>(null)
+
+const trendPeriod = ref<7 | 30>(7)
+
+const chartCanvas = ref<HTMLCanvasElement | null>(null)
+
+let trendChart: Chart | null = null
+
+const displayedTrends = computed(() => {
+  return trends.value.slice(0, trendPeriod.value)
+})
 
 async function loadDashboard() {
   try {
@@ -25,7 +65,7 @@ async function loadDashboard() {
     const [latestAssessment, trendData] =
       await Promise.all([
         fetchLatestAssessment(),
-        fetchTrends(7),
+        fetchTrends(30),
       ])
 
     assessment.value = latestAssessment
@@ -40,7 +80,126 @@ async function loadDashboard() {
   }
 }
 
+function destroyTrendChart() {
+  if (trendChart) {
+    trendChart.destroy()
+    trendChart = null
+  }
+}
+
+function renderTrendChart() {
+  if (!chartCanvas.value || !displayedTrends.value.length) {
+    destroyTrendChart()
+    return
+  }
+
+  destroyTrendChart()
+
+  const chartData = [...displayedTrends.value]
+    .reverse()
+
+  trendChart = new Chart(
+    chartCanvas.value,
+    {
+      type: 'line',
+
+      data: {
+        labels: chartData.map(
+          (trend) => trend.assessment_date,
+        ),
+
+        datasets: [
+          {
+            label: 'Overall risk',
+            data: chartData.map(
+              (trend) => trend.scores.overall_max,
+            ),
+
+            borderColor: '#7aa2f7',
+            backgroundColor:
+              'rgba(122, 162, 247, 0.10)',
+
+            borderWidth: 2,
+
+            pointRadius: 4,
+            pointHoverRadius: 6,
+
+            tension: 0.25,
+
+            fill: true,
+          },
+        ],
+      },
+
+      options: {
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+
+        plugins: {
+          legend: {
+            display: false,
+          },
+
+          tooltip: {
+            callbacks: {
+              label(context) {
+                return `Overall risk: ${Number(
+                  context.parsed.y,
+                ).toFixed(2)}`
+              },
+            },
+          },
+        },
+
+        scales: {
+          x: {
+            grid: {
+              color: 'rgba(128, 139, 155, 0.08)',
+            },
+
+            ticks: {
+              color: '#697586',
+              maxRotation: 0,
+            },
+          },
+
+          y: {
+            min: 0,
+            max: 100,
+
+            grid: {
+              color: 'rgba(128, 139, 155, 0.10)',
+            },
+
+            ticks: {
+              color: '#697586',
+            },
+          },
+        },
+      },
+    },
+  )
+}
+
+watch(
+  [displayedTrends, trendPeriod],
+  async () => {
+    await nextTick()
+    renderTrendChart()
+  },
+)
+
 onMounted(loadDashboard)
+
+onBeforeUnmount(() => {
+  destroyTrendChart()
+})
 </script>
 
 <template>
@@ -277,45 +436,35 @@ onMounted(loadDashboard)
               </p>
 
               <h2>
-                Recent assessments
+                Daily overall risk
               </h2>
             </div>
 
-            <span class="section-meta">
-              {{ trends.length }} days
-            </span>
+            <div class="trend-controls">
+              <button
+                class="trend-period-button"
+                :class="{
+                  active: trendPeriod === 7,
+                }"
+                @click="trendPeriod = 7"
+              >
+                7 DAYS
+              </button>
+
+              <button
+                class="trend-period-button"
+                :class="{
+                  active: trendPeriod === 30,
+                }"
+                @click="trendPeriod = 30"
+              >
+                30 DAYS
+              </button>
+            </div>
           </div>
 
-          <div class="trend-list">
-
-            <article
-              v-for="trend in trends"
-              :key="trend.assessment_date"
-              class="trend-row"
-            >
-
-              <div>
-                <p class="trend-date">
-                  {{ trend.assessment_date }}
-                </p>
-
-                <p class="trend-threat">
-                  {{ trend.threat_level }}
-                </p>
-              </div>
-
-              <div class="trend-score">
-                {{ trend.scores.overall_max.toFixed(2) }}
-              </div>
-
-              <div class="trend-events">
-                {{ trend.flare_count }} flares
-                ·
-                {{ trend.cme_count }} CMEs
-              </div>
-
-            </article>
-
+          <div class="trend-chart">
+            <canvas ref="chartCanvas"></canvas>
           </div>
 
         </section>

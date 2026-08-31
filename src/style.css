@@ -388,6 +388,52 @@ h1 {
   text-align: right;
 }
 
+.trend-controls {
+  display: flex;
+  gap: 4px;
+
+  padding: 3px;
+
+  border: 1px solid #1d2530;
+  background: #0d1219;
+}
+
+.trend-period-button {
+  padding: 7px 11px;
+
+  border: none;
+  border-radius: 4px;
+
+  color: #697586;
+  background: transparent;
+
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+
+  cursor: pointer;
+}
+
+.trend-period-button:hover {
+  color: #dce3ec;
+}
+
+.trend-period-button.active {
+  color: #dce3ec;
+  background: #18202b;
+}
+
+.trend-chart {
+  position: relative;
+
+  height: 360px;
+
+  padding: 20px;
+
+  border: 1px solid #1d2530;
+  background: #0d1219;
+}
+
 @media (max-width: 600px) {
   .trend-row {
     grid-template-columns: 1fr auto;
@@ -396,5 +442,18 @@ h1 {
   .trend-events {
     grid-column: 1 / -1;
     text-align: left;
+  }
+
+  .trend-controls {
+    width: 100%;
+  }
+
+  .trend-period-button {
+    flex: 1;
+  }
+
+  .trend-chart {
+    height: 280px;
+    padding: 12px;
   }
 }
