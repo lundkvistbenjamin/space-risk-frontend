@@ -57,6 +57,38 @@ const displayedTrends = computed(() => {
   return trends.value.slice(0, trendPeriod.value)
 })
 
+const averageRisk = computed(() => {
+  if (!displayedTrends.value.length) {
+    return 0
+  }
+
+  const total = displayedTrends.value.reduce(
+    (sum, trend) =>
+      sum + trend.scores.overall_max,
+    0,
+  )
+
+  return total / displayedTrends.value.length
+})
+
+const highestRisk = computed(() => {
+  if (!displayedTrends.value.length) {
+    return 0
+  }
+
+  return Math.max(
+    ...displayedTrends.value.map(
+      (trend) => trend.scores.overall_max,
+    ),
+  )
+})
+
+const highRiskDays = computed(() => {
+  return displayedTrends.value.filter(
+    (trend) => trend.threat_level === 'HIGH',
+  ).length
+})
+
 async function loadDashboard() {
   try {
     loading.value = true
@@ -465,6 +497,53 @@ onBeforeUnmount(() => {
 
           <div class="trend-chart">
             <canvas ref="chartCanvas"></canvas>
+          </div>
+
+          <!-- Trend summary -->
+          <div class="trend-summary">
+
+            <article class="trend-summary-card">
+              <p class="metric-label">
+                AVERAGE RISK
+              </p>
+
+              <p class="trend-summary-value">
+                {{ averageRisk.toFixed(2) }}
+              </p>
+
+              <p class="metric-unit">
+                over {{ displayedTrends.length }} days
+              </p>
+            </article>
+
+            <article class="trend-summary-card">
+              <p class="metric-label">
+                HIGHEST RISK
+              </p>
+
+              <p class="trend-summary-value">
+                {{ highestRisk.toFixed(2) }}
+              </p>
+
+              <p class="metric-unit">
+                over {{ displayedTrends.length }} days
+              </p>
+            </article>
+
+            <article class="trend-summary-card">
+              <p class="metric-label">
+                HIGH-RISK DAYS
+              </p>
+
+              <p class="trend-summary-value">
+                {{ highRiskDays }}
+              </p>
+
+              <p class="metric-unit">
+                threat level HIGH
+              </p>
+            </article>
+
           </div>
 
         </section>
