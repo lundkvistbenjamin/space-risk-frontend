@@ -85,23 +85,6 @@ onMounted(loadDashboard)
           :assessment="assessment"
         />
 
-        <!-- Assessment date -->
-        <section class="dashboard-section">
-
-          <div class="section-heading">
-            <div>
-              <p class="section-label">
-                ASSESSMENT DATE
-              </p>
-
-              <h2>
-                {{ assessment.assessment_date }}
-              </h2>
-            </div>
-          </div>
-
-        </section>
-
         <RiskTrend
           :trends="trends"
         />
