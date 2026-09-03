@@ -12,6 +12,7 @@ import type {
 } from './types/assessment'
 
 import DashboardHeader from './components/DashboardHeader.vue'
+import AssessmentOverview from './components/AssessmentOverview.vue'
 import RiskScoreCards from './components/RiskScoreCards.vue'
 import SolarActivity from './components/SolarActivity.vue'
 import RiskTrend from './components/RiskTrend.vue'
@@ -72,29 +73,9 @@ onMounted(loadDashboard)
       <!-- Dashboard -->
       <template v-else-if="assessment">
 
-        <section class="hero">
-          <div>
-            <p class="section-label">
-              TODAY'S ASSESSMENT
-            </p>
-
-            <h2>
-              Space weather conditions
-            </h2>
-
-            <p class="hero-description">
-              Current solar activity and its potential
-              impact on critical infrastructure.
-            </p>
-          </div>
-
-          <div
-            class="threat-badge"
-            :class="`threat-${assessment.threat_level.toLowerCase()}`"
-          >
-            {{ assessment.threat_level }}
-          </div>
-        </section>
+        <AssessmentOverview
+          :assessment="assessment"
+        />
 
         <RiskScoreCards
           :assessment="assessment"
@@ -118,11 +99,6 @@ onMounted(loadDashboard)
               </h2>
             </div>
           </div>
-
-          <p class="section-description">
-            This assessment represents space weather activity
-            recorded for this calendar day.
-          </p>
 
         </section>
 
