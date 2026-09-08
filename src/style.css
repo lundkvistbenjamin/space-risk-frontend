@@ -488,6 +488,24 @@ h1 {
   letter-spacing: -0.04em;
 }
 
+.metric-description {
+  margin-top: 14px;
+
+  color: #697586;
+
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.score-note {
+  margin-top: 14px;
+
+  color: #697586;
+
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
 @media (max-width: 600px) {
   .trend-row {
     grid-template-columns: 1fr auto;
