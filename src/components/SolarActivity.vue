@@ -34,7 +34,7 @@ defineProps<{
         </p>
 
         <p class="observation-description">
-          Events observed on this date
+          Solar flare events observed on this date.
         </p>
       </article>
 
@@ -48,7 +48,7 @@ defineProps<{
         </p>
 
         <p class="observation-description">
-          Events observed on this date
+          CME events observed on this date.
         </p>
       </article>
 
@@ -62,7 +62,7 @@ defineProps<{
         </p>
 
         <p class="observation-description">
-          Strongest recorded solar flare
+          Strongest solar flare observed on this date.
         </p>
       </article>
 
@@ -72,17 +72,11 @@ defineProps<{
         </p>
 
         <p class="observation-value">
-          {{ assessment.primary_cme_features.speed }}
+          {{ assessment.primary_cme_features.speed }} km/s
         </p>
 
         <p class="observation-description">
-          km/s ·
-          {{
-            assessment.primary_cme_features
-              .is_earth_directed
-              ? 'Earth-directed'
-              : 'Not Earth-directed'
-          }}
+          Primary CME speed and directional assessment used by the risk model.
         </p>
       </article>
 

@@ -19,10 +19,6 @@ defineProps<{
         {{ assessment.scores.overall_max.toFixed(2) }}
       </p>
 
-      <p class="metric-unit">
-        heuristic risk score
-      </p>
-
       <p class="metric-description">
         Highest estimated infrastructure risk across the monitored areas.
       </p>
@@ -35,10 +31,6 @@ defineProps<{
 
       <p class="metric-value">
         {{ assessment.scores.gps_disruption.toFixed(2) }}
-      </p>
-
-      <p class="metric-unit">
-        heuristic risk score
       </p>
 
       <p class="metric-description">
@@ -55,10 +47,6 @@ defineProps<{
         {{ assessment.scores.power_grid.toFixed(2) }}
       </p>
 
-      <p class="metric-unit">
-        heuristic risk score
-      </p>
-
       <p class="metric-description">
         Estimated risk from Earth-directed CME speed and half-angle.
       </p>
@@ -71,10 +59,6 @@ defineProps<{
 
       <p class="metric-value">
         {{ assessment.scores.radio_blackout.toFixed(2) }}
-      </p>
-
-      <p class="metric-unit">
-        heuristic risk score
       </p>
 
       <p class="metric-description">

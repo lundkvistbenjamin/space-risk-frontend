@@ -8,7 +8,7 @@
 
       <div class="status">
         <span class="status-dot"></span>
-        <span>Live data</span>
+        <span>Daily assessment</span>
       </div>
     </div>
   </header>
