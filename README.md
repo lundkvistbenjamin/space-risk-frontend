@@ -2,7 +2,7 @@
 
 **Live Demo:** https://space-risk-frontend.vercel.app/
 
-**Backend API:** https://space-risk-backend.vercel.app
+**Backend Repository:** https://github.com/lundkvistbenjamin/space-risk-backend
 
 Space Weather Risk Monitor is a Vue-based dashboard for monitoring daily space weather conditions and their potential impact on critical infrastructure. The application consumes assessments generated from NASA DONKI data and presents infrastructure risk scores, solar activity observations, and historical risk trends through a clean, responsive interface.
 
