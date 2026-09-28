@@ -1,6 +1,6 @@
 # Space Weather Risk Monitor Frontend
 
-**Live Demo:** https://space-risk-frontend.vercel.app/
+**Live Demo:** https://space-risk-frontend.vercel.app
 
 **Backend Repository:** https://github.com/lundkvistbenjamin/space-risk-backend
 
